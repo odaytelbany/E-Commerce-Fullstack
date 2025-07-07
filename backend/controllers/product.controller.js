@@ -2,6 +2,16 @@ import Redis from "ioredis";
 import Product from "../models/Product.js";
 import cloudinary from "../lib/cloudinary.js";
 
+
+async function updateFeaturedProductsCache() {
+  try{
+    const featuredProducts = await Product.find({ isFeatured: true}).lean();
+    await Redis.set("featured_products", JSON.stringify(featuredProducts));
+  } catch (error) {
+    console.log("Error updating featured products cache:", error);
+  }
+}
+
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({});
@@ -89,3 +99,63 @@ export const deleteProduct = async (req, res) => {
       .json({ message: "Internal server error", error: error });
   }
 };
+
+export const getRecommendedProducts = async (req, res) => {
+  try {
+    const products = await Product.aggregate([
+      { $sample: { size: 3 } },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          description: 1,
+          price: 1,
+          image: 1,
+        },
+      },
+    ]);
+    res.status(200).json(products);
+  } catch (error) {
+    console.log("Error in getRecommendedProducts controller:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+};
+
+export const getProductsByCategory = async (req, res) => {
+  const {category} = req.params;
+  try{
+    const products = await Product.find({ category});
+    if (!products || products.length === 0) {
+      return res.status(404).json({ message: "No products found in this category" });
+    }
+    res.json(products);
+  } catch(error) {
+    console.log("Error in getProductsByCategory controller:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+}
+
+export const toggleFeaturedProduct = async (req, res) => {
+  const {id} = req.params;
+  try{
+    const product = await Product.findById(id);
+    if (product) {
+      product.isFeatured = !product.isFeatured;
+      const updatedProduct = await product.save();
+      await updateFeaturedProductsCache();
+      res.status(200).json(updatedProduct);
+    } else {
+      res.status(404).json({message: "Product not found"});
+    }
+
+  } catch (error) {
+    console.log("Error in toggleFeaturedProduct controller:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+}
