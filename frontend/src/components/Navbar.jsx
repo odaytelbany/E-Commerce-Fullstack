@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { Lock, LogOut, ShoppingCart, UserPlus } from "lucide-react";
+import { Lock, LogIn, LogOut, ShoppingCart, UserPlus } from "lucide-react";
 
 const Navbar = () => {
     const user = false;
@@ -35,7 +35,7 @@ const Navbar = () => {
                                 <span className='hidden sm:inline ml-2'>Log Out</span>
                             </button>
                         ) : (<>
-                            <Link to={"/signup"} className='bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out flex items-center'>
+                            <Link to={"/register"} className='bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out flex items-center'>
                                 <UserPlus className='mr-2' size={18} />
                                 Sign Up
                             </Link>
