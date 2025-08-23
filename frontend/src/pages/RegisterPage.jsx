@@ -4,8 +4,7 @@ import { ArrowRight, Loader, Mail, User, UserPlus } from 'lucide-react';
 import { Link } from 'react-router';
 import { useAuthStore } from '../store/useAuthStore';
 const RegisterPage = () => {
-  const {register} = useAuthStore();
-  const loading = false;
+  const { register, loading } = useAuthStore();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -111,7 +110,7 @@ const RegisterPage = () => {
                   Loading...
                 </>) : (<>
                   <UserPlus className="mr-2 h-5 w-5" aria-hidden='true' />
-                  Sign Up
+                  Register
                 </>)
               }
             </button>

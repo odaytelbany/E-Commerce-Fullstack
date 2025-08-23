@@ -2,15 +2,16 @@ import { LogIn, Mail, Loader, ArrowRight } from 'lucide-react';
 import { useState } from 'react'
 import { motion } from "motion/react"
 import { Link } from 'react-router';
+import { useAuthStore } from '../store/useAuthStore';
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const loading = false;
+  const {login, loading} = useAuthStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    login(email, password);
   }
 
   return (
@@ -73,7 +74,7 @@ const LoginPage = () => {
                   Loading...
                 </>) : (<>
                   <LogIn className="mr-2 h-5 w-5" aria-hidden='true' />
-                  Sign Up
+                  Login
                 </>)
               }
             </button>

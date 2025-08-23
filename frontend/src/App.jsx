@@ -1,11 +1,21 @@
-import { Route, Routes } from "react-router"
+import { Navigate, Route, Routes } from "react-router"
 import HomePage from "./pages/HomePage"
 import LoginPage from "./pages/LoginPage"
 import Navbar from "./components/Navbar"
 import RegisterPage from "./pages/RegisterPage"
 import { Toaster } from "react-hot-toast"
+import { useAuthStore } from "./store/useAuthStore"
+import { useEffect } from "react"
 
 const App = () => {
+  const { user, checkAuth } = useAuthStore();
+
+  console.log("User in App.jsx:", user);
+  useEffect(() => {
+    console.log("Checking authentication status...");
+    checkAuth();
+  }, [checkAuth]);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
@@ -14,15 +24,15 @@ const App = () => {
         </div>
       </div>
 
-        <div className="relative z-50 pt-20">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-          </Routes>
-        </div>
-      <Toaster/>
+      <div className="relative z-50 pt-20">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/register" element={user ? <Navigate to={"/"} /> : <RegisterPage />} />
+          <Route path="/login" element={user ? <Navigate to={"/"} /> : <LoginPage />} />
+        </Routes>
+      </div>
+      <Toaster />
     </div>
 
   )
