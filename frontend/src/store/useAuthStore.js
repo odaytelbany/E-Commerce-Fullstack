@@ -36,6 +36,15 @@ export const useAuthStore = create((set) => ({
         }
     },
 
+    logout: async () => {
+        try{
+            await axios.post("/auth/logout");
+            set({user: null});
+        } catch(error) {
+            toast.error(error?.response?.data?.message || "Logout failed");
+        }
+    },
+
     checkAuth : async () => {
         set({checkingAuth: true});
         try {
@@ -49,3 +58,6 @@ export const useAuthStore = create((set) => ({
     }
 
 }))
+
+
+// To do: axios interceptor for refreshing access token

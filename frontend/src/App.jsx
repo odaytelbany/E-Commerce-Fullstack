@@ -6,9 +6,10 @@ import RegisterPage from "./pages/RegisterPage"
 import { Toaster } from "react-hot-toast"
 import { useAuthStore } from "./store/useAuthStore"
 import { useEffect } from "react"
+import Loader from "./components/Loader"
 
 const App = () => {
-  const { user, checkAuth } = useAuthStore();
+  const { user, checkAuth, checkingAuth } = useAuthStore();
 
   console.log("User in App.jsx:", user);
   useEffect(() => {
@@ -16,6 +17,10 @@ const App = () => {
     checkAuth();
   }, [checkAuth]);
 
+  if (checkingAuth) {
+    return <Loader />
+  }
+  
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
