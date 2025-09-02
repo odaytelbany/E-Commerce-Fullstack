@@ -4,7 +4,7 @@ import { Lock, LogIn, LogOut, ShoppingCart, UserPlus } from "lucide-react";
 import { useAuthStore } from '../store/useAuthStore';
 
 const Navbar = () => {
-    const {user, logout} = useAuthStore();
+    const { user, logout } = useAuthStore();
     const isAdmin = user?.role === "admin";
     return (
         <header className='fixed top-0 left-0 w-full bg-gray-900 bg-opacity-90 backdrop-blur-md shadow-lg z-40 transition-all duration-300 border-b border-emerald-800'>
@@ -24,7 +24,7 @@ const Navbar = () => {
                         </Link>
                     }
                     {
-                        isAdmin && <Link to="/cart" className='bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1 rounded-md font-medium transition duration-300 ease-in-out flex items-center'>
+                        isAdmin && <Link to="/secret-dashboard" className='bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1 rounded-md font-medium transition duration-300 ease-in-out flex items-center'>
                             <Lock className='inline-block mr-1 ' size={18} />
                             <span className='hidden sm:inline '>Dashboard</span>
                         </Link>

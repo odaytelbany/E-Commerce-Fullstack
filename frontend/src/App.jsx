@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router"
 import HomePage from "./pages/HomePage"
 import LoginPage from "./pages/LoginPage"
+import AdminPage from "./pages/AdminPage"
 import Navbar from "./components/Navbar"
 import RegisterPage from "./pages/RegisterPage"
 import { Toaster } from "react-hot-toast"
@@ -20,7 +21,7 @@ const App = () => {
   if (checkingAuth) {
     return <Loader />
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={user ? <Navigate to={"/"} /> : <RegisterPage />} />
           <Route path="/login" element={user ? <Navigate to={"/"} /> : <LoginPage />} />
+          <Route path="/secret-dashboard" element={user?.role === "admin" ? <AdminPage /> : <Navigate to={"/login"} />} />
         </Routes>
       </div>
       <Toaster />
