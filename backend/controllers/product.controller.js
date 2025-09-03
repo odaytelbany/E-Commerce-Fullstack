@@ -65,6 +65,8 @@ export const createProduct = async (req, res) => {
       isFeatured,
     });
 
+    await product.save();
+
     res.status(201).json(product);
   } catch (error) {
     console.log("Error in createProduct controller:", error);

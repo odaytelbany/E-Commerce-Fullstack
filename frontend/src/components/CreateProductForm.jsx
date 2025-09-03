@@ -1,22 +1,45 @@
 import { useState } from 'react'
 import { motion } from "framer-motion";
 import { Loader, PlusCircle, Upload } from 'lucide-react';
+import { useProductStore } from '../store/useProductStore';
 
 const categories = ["jean", "t-shirt", "shoe", "glasses", "jacket", "suit", "bag"];
 const CreateProductForm = () => {
+  const { createProduct, loading } = useProductStore();
   const [newProduct, setNewProduct] = useState({
     name: "",
     description: "",
     price: "",
     category: "",
-    image: ","
+    image: ""
   })
 
-  const loading = false;
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(newProduct);
+    try {
+      await createProduct(newProduct);
+      setNewProduct({
+        name: "",
+        description: "",
+        price: "",
+        category: "",
+        image: ""
+      })
+    } catch (error) {
+      console.log("Error: ", error);
+      console.log("Error creating the product");
+    }
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setNewProduct({ ...newProduct, image: reader.result });
+      }
+      reader.readAsDataURL(file);
+    }
   }
 
   return (
@@ -86,12 +109,12 @@ const CreateProductForm = () => {
         </div>
 
         <div className='mt-1 flex items-center'>
-          <input type="file" id='image' className='sr-only' accept='image/*' />
+          <input onChange={handleImageChange} type="file" id='image' className='sr-only' accept='image/*' />
           <label htmlFor="image" className='cursor-pointer bg-gray-700 py-2 px-3 border border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-300 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'>
             <Upload className='h-5 w-5 inline-block mr-2' />
             Upload Image
           </label>
-          {newProduct.image && <span className='ml-3 text-sm text-gray-400'>{newProduct.image.name}</span>}
+          {newProduct.image && <span className='ml-3 text-sm text-gray-400'>Image Uploaded !</span>}
         </div>
 
         <button
