@@ -2,13 +2,13 @@ import CategoryItem from "../components/CategoryItem";
 import { useAuthStore } from "../store/useAuthStore";
 
 const categories = [
-  { href: "/jeans", name: "Jeans", imageUrl: "/jeans.jpg" },
-  { href: "/tshirts", name: "T-shirts", imageUrl: "/tshirts.jpg" },
+  { href: "/jean", name: "Jeans", imageUrl: "/jeans.jpg" },
+  { href: "/t-shirt", name: "T-shirts", imageUrl: "/tshirts.jpg" },
   { href: "/shoes", name: "Shoes", imageUrl: "/shoes.jpg" },
   { href: "/glasses", name: "Glasses", imageUrl: "/glasses.png" },
-  { href: "/jackets", name: "Jackets", imageUrl: "/jackets.jpg" },
-  { href: "/suits", name: "Suits", imageUrl: "/suits.jpg" },
-  { href: "/bags", name: "Bags", imageUrl: "/bags.jpg" },
+  { href: "/jacket", name: "Jackets", imageUrl: "/jackets.jpg" },
+  { href: "/suit", name: "Suits", imageUrl: "/suits.jpg" },
+  { href: "/bag", name: "Bags", imageUrl: "/bags.jpg" },
 ];
 const HomePage = () => {
   const { user } = useAuthStore();

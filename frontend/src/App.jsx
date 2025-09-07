@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast"
 import { useAuthStore } from "./store/useAuthStore"
 import { useEffect } from "react"
 import Loader from "./components/Loader"
+import CategoryPage from "./components/CategoryPage"
 
 const App = () => {
   const { user, checkAuth, checkingAuth } = useAuthStore();
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={user ? <Navigate to={"/"} /> : <RegisterPage />} />
           <Route path="/login" element={user ? <Navigate to={"/"} /> : <LoginPage />} />
+          <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/secret-dashboard" element={user?.role === "admin" ? <AdminPage /> : <Navigate to={"/login"} />} />
         </Routes>
       </div>
