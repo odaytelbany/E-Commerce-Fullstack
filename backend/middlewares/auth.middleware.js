@@ -9,7 +9,7 @@ export const protectRoute = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
-        const user = await User.findById(decoded.userId).select("-password").lean();
+        const user = await User.findById(decoded.userId).select("-password");
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
