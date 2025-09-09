@@ -9,9 +9,18 @@ import { useAuthStore } from "./store/useAuthStore"
 import { useEffect } from "react"
 import Loader from "./components/Loader"
 import CategoryPage from "./components/CategoryPage"
+import CartPage from "./pages/CartPage"
+import { useCartStore } from "./store/useCartStore"
 
 const App = () => {
   const { user, checkAuth, checkingAuth } = useAuthStore();
+  const {getCartItems} = useCartStore();
+
+  useEffect(() => {
+    if (user) {
+      getCartItems();
+    }
+  }, [getCartItems, user]);
 
   console.log("User in App.jsx:", user);
   useEffect(() => {
@@ -37,8 +46,9 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={user ? <Navigate to={"/"} /> : <RegisterPage />} />
           <Route path="/login" element={user ? <Navigate to={"/"} /> : <LoginPage />} />
-          <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/secret-dashboard" element={user?.role === "admin" ? <AdminPage /> : <Navigate to={"/login"} />} />
+          <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
         </Routes>
       </div>
       <Toaster />
