@@ -37,6 +37,30 @@ export const useCartStore = create((set, get) => ({
         }
     },
 
+    removeFromCart: async (productId) => {
+        try {
+            await axios.delete(`/cart`, {data: {productId}});
+            set((prevState) => ({cart: prevState.cart.filter((item) => item._id !== productId)}));
+            get().calculateTotals();
+            toast.success("Product Removed Successfully!")
+        } catch (error) {
+            console.log("Error removing from cart: ", error);
+            toast.error(error.response?.data?.message || "Error removing product from cart");
+        }
+    },
+
+    updateQuantity: async (productId, quantity) => {
+        if (quantity === 0) {
+            get().removeFromCart(productId);
+            return; 
+        }
+        await axios.put(`/cart/${productId}`, {quantity});
+        set((prevState) => ({
+            cart:prevState.cart.map((item) => item._id === productId ? {...item, quantity} : item),
+        }));
+        get().calculateTotals();
+    },
+
     calculateTotals: () => {
         const {cart, coupon} = get();
         const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)

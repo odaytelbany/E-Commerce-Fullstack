@@ -3,8 +3,10 @@ import { useCartStore } from "../store/useCartStore";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 import CartItem from "../components/CartItem";
+import PeopleAlsoBought from "../components/PeopleAlsoBought";
 const CartPage = () => {
   const { cart } = useCartStore();
+  console.log(cart.length);
 
   return (
     <div className="py-8 md:py-16">
@@ -31,22 +33,24 @@ const CartPage = () => {
 export default CartPage;
 
 const EmptyCartUI = () => {
-  <motion.div
-    className="flex flex-col items-center justify-center space-y-4 py-16"
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-  >
-    <ShoppingCart className="size-24 text-gray-300" />
-    <h3 className="text-2xl font-semibold">Your cart is empty</h3>
-    <p className="text-gray-400">
-      Looks like you {"haven't"} added anything to your cart yet.
-    </p>
-    <Link
-      className="mt-4 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-md transition-colors"
-      to="/"
+  return (
+    <motion.div
+      className="flex flex-col items-center justify-center space-y-4 py-16"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
     >
-      Start Shopping
-    </Link>
-  </motion.div>;
+      <ShoppingCart className="size-24 text-gray-300" />
+      <h3 className="text-2xl font-semibold">Your cart is empty</h3>
+      <p className="text-gray-400">
+        Looks like you {"haven't"} added anything to your cart yet.
+      </p>
+      <Link
+        className="mt-4 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-md transition-colors"
+        to="/"
+      >
+        Start Shopping
+      </Link>
+    </motion.div>
+  );
 };
