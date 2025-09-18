@@ -11,6 +11,7 @@ import Loader from "./components/Loader"
 import CategoryPage from "./components/CategoryPage"
 import CartPage from "./pages/CartPage"
 import { useCartStore } from "./store/useCartStore"
+import PurchaseSuccessPage from "./pages/PurchaseSuccessPage"
 
 const App = () => {
   const { user, checkAuth, checkingAuth } = useAuthStore();
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/secret-dashboard" element={user?.role === "admin" ? <AdminPage /> : <Navigate to={"/login"} />} />
           <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
+          <Route path="/purchase-success" element={user ? <PurchaseSuccessPage /> : <Navigate to="/login" />} />
         </Routes>
       </div>
       <Toaster />
