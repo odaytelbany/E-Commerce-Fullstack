@@ -12,6 +12,7 @@ import CategoryPage from "./components/CategoryPage"
 import CartPage from "./pages/CartPage"
 import { useCartStore } from "./store/useCartStore"
 import PurchaseSuccessPage from "./pages/PurchaseSuccessPage"
+import PurchaseCancelPage from "./pages/PurchaseCancelPage"
 
 const App = () => {
   const { user, checkAuth, checkingAuth } = useAuthStore();
@@ -23,7 +24,6 @@ const App = () => {
     }
   }, [getCartItems, user]);
 
-  console.log("User in App.jsx:", user);
   useEffect(() => {
     console.log("Checking authentication status...");
     checkAuth();
@@ -51,6 +51,7 @@ const App = () => {
           <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
           <Route path="/purchase-success" element={user ? <PurchaseSuccessPage /> : <Navigate to="/login" />} />
+          <Route path="/purchase-cancel" element={user ? <PurchaseCancelPage /> : <Navigate to="/login" />} />
         </Routes>
       </div>
       <Toaster />

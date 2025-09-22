@@ -37,7 +37,7 @@ export const useCartStore = create((set, get) => ({
             toast.error(error.response?.data?.message || "Error adding product to cart");
         }
     },
-
+  
     removeFromCart: async (productId) => {
         try {
             await axios.delete(`/cart`, {data: {productId}});
@@ -48,6 +48,12 @@ export const useCartStore = create((set, get) => ({
             console.log("Error removing from cart: ", error);
             toast.error(error.response?.data?.message || "Error removing product from cart");
         }
+    },
+
+    clearCart: async () => {
+        console.log("Clearing cart...");
+        await axios.delete("/cart/clear");
+        set({cart: [], coupon: null, total: 0, subtotal: 0});
     },
 
     updateQuantity: async (productId, quantity) => {
