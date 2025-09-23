@@ -17,7 +17,7 @@ const OrderSummary = () => {
     const stripe = await stripePromise;
     const res = await axios.post("/payments/create-checkout-session", {
       products: cart,
-      coupon: coupon ? coupon.code : null,
+      couponCode: coupon ? coupon.code : null,
     });
     const session = res.data;
     const result = await stripe.redirectToCheckout({
@@ -60,13 +60,14 @@ const OrderSummary = () => {
                 Coupon ({coupon.code})
               </dt>
               <dd className="text-base font-medium text-emerald-400">
-                - {coupon.discountPercentage}
+                - {coupon.discountPercentage}%
               </dd>
             </dl>
           )}
+          <hr className="h-0.5 text-gray-600"/>
           <dl className="flex items-center justify-between gap-4">
-            <dt className="text-base font-normal text-gray-300">Total</dt>
-            <dd className="text-base font-medium text-emerald-400">
+            <dt className="text-base font-bold text-gray-300">Total</dt>
+            <dd className="text-base font-bold text-emerald-400">
               ${total.toFixed(2)}
             </dd>
           </dl>

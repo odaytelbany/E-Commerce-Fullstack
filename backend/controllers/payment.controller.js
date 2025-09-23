@@ -11,9 +11,10 @@ async function createStripeCoupon(discountPercentage) {
 }
 
 async function createNewCoupon(userId) {
+  await Coupon.findOneAndDelete({userId: userId});
   const newCoupon = new Coupon({
     code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
-    discountPercantage: 10,
+    discountPercentage: 10,
     expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
     userId: userId,
   });
@@ -55,7 +56,7 @@ export const createCheckoutSession = async (req, res) => {
       });
       if (coupon) {
         totalAmount -= Math.round(
-          (totalAmount * coupon.discountPercantage) / 100
+          (totalAmount * coupon.discountPercentage) / 100
         );
       }
     }
@@ -67,7 +68,7 @@ export const createCheckoutSession = async (req, res) => {
       success_url: `http://localhost:5173/purchase-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `http://localhost:5173/purchase-cancel`,
       discounts: coupon
-        ? [{ coupon: await createStripeCoupon(coupon.discountPercantage) }]
+        ? [{ coupon: await createStripeCoupon(coupon.discountPercentage) }]
         : [],
       metadata: {
         userId: req.user._id.toString(),

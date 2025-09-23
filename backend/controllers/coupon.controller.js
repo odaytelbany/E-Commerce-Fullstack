@@ -22,7 +22,7 @@ export const validateCoupon = async (req, res) => {
             await coupon.save();
             return res.status(404).json({ message: "Coupon not expired!" });
         }
-        res.status(200).json({message: "Coupon is valid!", code: coupon.code, discountPercentage: coupon.discountPercentage});
+        res.status(200).json({message: "Coupon is valid!", code: coupon?.code, discountPercentage: coupon?.discountPercentage});
     } catch (error) {
         console.error("Error in validateCoupon controller:", error);
         res.status(500).json({ message: "Internal server error" });
