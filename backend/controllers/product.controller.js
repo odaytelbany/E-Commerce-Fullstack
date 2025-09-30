@@ -1,12 +1,12 @@
-import Redis from "ioredis";
 import Product from "../models/Product.js";
 import cloudinary from "../lib/cloudinary.js";
+import { redis } from "../lib/redis.js";
 
 
 async function updateFeaturedProductsCache() {
   try{
     const featuredProducts = await Product.find({ isFeatured: true}).lean();
-    await Redis.set("featured_products", JSON.stringify(featuredProducts));
+    await redis.set("featured_products", JSON.stringify(featuredProducts));
   } catch (error) {
     console.log("Error updating featured products cache:", error);
   }
@@ -26,7 +26,7 @@ export const getAllProducts = async (req, res) => {
 
 export const getFeaturedProducts = async (req, res) => {
   try {
-    let featuredProducts = await Redis.get("featured_products");
+    let featuredProducts = await redis.get("featured_products");
     if (featuredProducts) {
       return res.json(JSON.parse(featuredProducts));
     }
@@ -35,7 +35,7 @@ export const getFeaturedProducts = async (req, res) => {
     if (!featuredProducts) {
       return res.status(404).json({ message: "No featured products found" });
     }
-    await Redis.set("featured_products", JSON.stringify(featuredProducts));
+    await redis.set("featured_products", JSON.stringify(featuredProducts));
     res.json(featuredProducts);
   } catch (error) {
     console.log("Error in getFeaturedProducts controller:", error);
